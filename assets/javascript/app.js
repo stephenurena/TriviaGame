@@ -17,32 +17,6 @@ var game = {
 			//create el p for timer
 			gameP = '<p class="text-center timer-p">Time Remaining: <span id="timer">10</span></p><p class="text-center">' + songArr[questionCounter] + '</p><p class="text-center">' + lyricArr[questionCounter] + '</p><p class="first-answer answer">A. ' + answerArr[questionCounter][0] + "</p><p class='answer'>B. " + answerArr[questionCounter][1] + "</p><p class='answer'>C. " + answerArr[questionCounter][2] + "</p>";
 					$("#quiz").html(gameP);
-		
-			// //generated song onclick
-			// songP = $("<p>");
-			// 		 songP.attr("id", "song");
-			// 		 songP.addClass("text-center");
-			// 		 $("#quiz").append(songP);
-
-			// 	songSel = '<p class="text-center">' + songArr[questionCounter] + '</p>';
-			// 			  $("#song").html(songSel);
-			// //generated lyric onclick
-			// lyricP = $("<p>");
-			// 		 lyricP.attr("id", "lyric");
-			// 		 lyricP.addClass("text-center");
-			// 		 $("#quiz").append(lyricP);
-
-			// 	lyricSel = '<p class="text-center">' + lyricArr[questionCounter] + '</p>';
-			// 			  $("#lyric").html(lyricSel);
-			// //generated answers onclick
-			// answerP = $("<p>");
-			// 		 answerP.attr("id", "answers");
-			// 		 answerP.addClass("text-left answers-p");
-			// 		 $("#quiz").append(answerP);
-
-			// 	 answerSel = '<p class="first-answer answer">A. ' + answerArr[questionCounter][0] + "</p><p class='answer'>B. " + answerArr[questionCounter][1] + "</p><p class='answer'>C. " + answerArr[questionCounter][2] + "</p>";
-			// 	 			$("#answers").append(answerSel);
-			// setTimeout(game.wait(), 4000);
 		},
 
 	timeCountDown: function(){
@@ -78,13 +52,6 @@ var game = {
 	unansweredLoss: function() {
 		lossTally++;
 		console.log(lossTally);
-		genDivs = $("<div>");
-				  genDivs.attr("id", "quizWin");
-				  genDivs.addClass("panel-body");
-				  genDivs.text("test")
-				  $("#gameDiv").append(genDivs);
-		correctP = '<p id="answer" class="text-center">No! The correct answer was  ' + "<strong>" + correctLyric[questionCounter] + "</strong></p>";
-		$("#gameDiv").html(correctP);
 		setInterval(this.inBetweenScreen(), 1000 *10);
 	},
 
@@ -96,9 +63,9 @@ var game = {
 				  genDivs.addClass("panel-body");
 				  genDivs.text("Test");
 				  $("#gameDiv").append(genDivs);
-		correctP = '<p id="answer" class="text-center">YES! ' + "<strong>" + correctLyric[questionCounter] + "</strong> is correct</p>";
+		correctP = '<p id="answer" class="text-center">YES! ' + "<strong>" + correctLyric[questionCounter] + "</strong> is correct</p>" + videoArr[questionCounter];
 			$("#gameDiv").html(correctP);
-		setInterval(this.inBetweenScreen(), 1000 *10);
+		setInterval(this.inBetweenScreen(), 1000 *30);
 		
 	},
 
@@ -115,11 +82,11 @@ var game = {
 		setInterval(this.inBetweenScreen(), 1000 *10);
 	},
 	resultScreen: function () {
-			results = "<p class='text-center'>All done, here's how you did!" + "</p>" + "<p class='summary-correct'>Correct Answers: " + winTally + "</p>" + "<p>Wrong Answers: " + lossTally + "</p>" + "<p class='text-center reset-button-container'><a class='btn btn-primary btn-lg btn-block reset-button' href='#' role='button'>Reset The Quiz!</a></p>";
+			results = "<div id='results' <p class='text-center'>All done, here's how you did!" + "</p>" + "<p class='summary-correct'>Correct Answers: " + winTally + "</p>" + "<p>Wrong Answers: " + lossTally + "</p>" + "<p class='text-center reset-button-container'><a class='btn btn-primary btn-lg btn-block reset-button' href='#' role='button'>Reset The Quiz!</a></p></div>";
 			$("#gameDiv").html(results);
 	},
 	reset: function () {
-		
+		$("#results").hide();
 		questionCounter = 0;
 		winTally = 0;
 		lossTally = 0;
@@ -142,7 +109,6 @@ $("#gameDiv").on("click", "#startBtn", function(){
 	game.timeCountDown();
 });
 $("body").on("click", ".reset-button", function(){
-	$("#")
 	game.reset();
 });
 $("body").on("click", ".answer", function(){
@@ -165,45 +131,6 @@ $("body").on("click", ".answer", function(){
 	}
 });
 
-
-//Globals
-//==========================================================================================
-// function gMarkUp (){
-// 		//game div to nest p's of timer, song, and answers
-// 		gameDiv = $("<div>");
-// 				  gameDiv.attr("id", "quiz")
-// 				  gameDiv.addClass("panel-body");
-// 				  $("#gameDiv").append(gameDiv);
-// 		//create el p for timer
-// 		timerP = '<p class="text-center timer-p">Time Remaining: <span id="timer">10</span></p>';
-// 				$("#quiz").html(timerP);
-	
-// 		//generated song onclick
-// 		songP = $("<p>");
-// 				 songP.attr("id", "song");
-// 				 songP.addClass("text-center");
-// 				 $("#quiz").append(songP);
-
-// 			songSel = '<p class="text-center">' + songArr[questionCounter] + '</p>';
-// 					  $("#song").html(songSel);
-// 		//generated lyric onclick
-// 		lyricP = $("<p>");
-// 				 lyricP.attr("id", "lyric");
-// 				 lyricP.addClass("text-center");
-// 				 $("#quiz").append(lyricP);
-
-// 			lyricSel = '<p class="text-center">' + lyricArr[questionCounter] + '</p>';
-// 					  $("#lyric").html(lyricSel);
-// 		//generated answers onclick
-// 		answerP = $("<p>");
-// 				 answerP.attr("id", "answers");
-// 				 answerP.addClass("text-left answers-p");
-// 				 $("#quiz").append(answerP);
-
-// 			 answerSel = '<p class="first-answer answer">A. ' + answerArr[questionCounter][0] + "</p><p class='answer'>B. " + answerArr[questionCounter][1] + "</p><p class='answer'>C. " + answerArr[questionCounter][2] + "</p>";
-// 			 			$("#answers").append(answerSel);
-// 		// setTimeout(game.wait(), 4000);
-// 	};
 //Global variables
 //==========================================================================================
 
