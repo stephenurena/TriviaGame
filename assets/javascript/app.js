@@ -37,6 +37,8 @@ var game = {
 	},
 	inBetweenScreen: function () {
 		if (questionCounter < 6) {
+			$("#quiz").show();
+			//tried putting hide for #quizWin but didn't work, was hiding during a win
 			questionCounter++;
 			clearInterval(clockCount);
 			this.gMarkUp();
@@ -64,7 +66,7 @@ var game = {
 				  genDivs.text("Test");
 				  $("#gameDiv").append(genDivs);
 		correctP = '<p id="answer" class="text-center">YES! ' + "<strong>" + correctLyric[questionCounter] + "</strong> is correct</p>" + videoArr[questionCounter];
-			$("#gameDiv").html(correctP);
+			$("#quizWin").html(correctP);
 		setInterval(this.inBetweenScreen(), 1000 *30);
 		
 	},
@@ -117,14 +119,14 @@ $("body").on("click", ".answer", function(){
 	if(clickedAnswer === correctLyric[questionCounter]){
 		clearInterval(clockCount);
 		game.win();
-		$("gameDiv").hide();
+		// $("gameDiv").hide();
 		$("#quiz").hide();
 		console.log("correct");
 		// game.timeCountDown();
 	} else {
 		clearInterval(clockCount);
 		game.loss();
-		$("gameDiv").hide();
+		// $("gameDiv").hide();
 		$("#quiz").hide();
 		console.log("incorrect");	
 		// game.timeCountDown();
