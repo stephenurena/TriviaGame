@@ -12,86 +12,67 @@ var game = {
 	timeCountDown: function(){
 			clockCount = setInterval(gameTimer, 1000);
 				function gameTimer() {
-					if (counter === 0) { //loss due to not answerings in time
-						clearInterval(clockCount);
-						this.game.unansweredLoss();
+					if (counter === 0) {
+						lossTally++;
 						console.log(lossTally);
-						// this.game.inBetweenScreen();
+						clearInterval(clockCount);
+						if (questionCounter < 7) {
+							questionCounter++;
+							gMarkUp();
+							counter = 30;
+						}
+						// generateLossDueToTimeOut();
 					}
 					if (counter > 0) {
-						// clearInterval(clockCount);
 						counter--;
 					}
 					$("#timer").html(counter);
 				}
 	},
-	inBetweenScreen: function () {
-		if (questionCounter < 6) {
-			questionCounter++;
-			clearInterval(clockCount);
-			gMarkUp();
-			counter = 10;
-			this.timeCountDown();
-			}
-			else {
-				clearInterval(clockCount);
-				this.resultScreen();
-			};
+
+	// wait: function () {
+	// 	if (questionCounter < songArr.length) {
+	// 		questionCounter++;
+	// 		gMarkUp();
+	// 		counter = 30;
+	// 		this.timeCountDown();
+	// 	}
+	// 	else {
+	// 		this.finalScreen();
+	// 	}
+	// },
+
+	finalScreen: function () {
+			results = "<p class='text-center timer-p'>Time Remaining: <span id='timer'>" + counter + "</span></p>" + "<p class='text-center'>All done, here's how you did!" + "</p>" + "<p class='summary-correct'>Correct Answers: " + correctTally + "</p>" + "<p>Wrong Answers: " + incorrectTally + "</p>" + "<p>Unanswered: " + unansweredTally + "</p>" + "<p class='text-center reset-button-container'><a class='btn btn-primary btn-lg btn-block reset-button' href='#' role='button'>Reset The Quiz!</a></p>";
+			$("#gameDiv").html(results);
 	},
 
-	unansweredLoss: function() {
-		lossTally++;
-		console.log(lossTally);
-		genDivs = $("<div>");
-				  genDivs.attr("id", "quizWin");
-				  genDivs.addClass("panel-body");
-				  genDivs.text("test")
-				  $("#gameDiv").append(genDivs);
-		correctP = '<p id="answer" class="text-center">No! The correct answer was  ' + "<strong>" + correctLyric[questionCounter] + "</strong></p>";
-		$("#gameDiv").html(correctP);
-		setInterval(this.inBetweenScreen(), 1000 *10);
+	generateLossDueToTimeOut: function () {
+			unansweredTally++;
+			gameHTML = "<p class='text-center timer-p'>Time Remaining: <span class='timer'>" + counter + "</span></p>" + "<p class='text-center'>You ran out of time!  The correct answer was: " + correctAnswers[questionCounter] + "</p>" + "<img class='center-block img-wrong' src='img/x.png'>";
+			$("#gameDiv").html(gameHTML);
+			setTimeout(this.wait, 4000);  //  change to 4000 or other amount
 	},
-
 	win: function(){
 		winTally++;
 		console.log(winTally);
-		genDivs = $("<div>");
-				  genDivs.attr("id", "quizWin");
-				  genDivs.addClass("panel-body");
-				  genDivs.text("Test");
-				  $("#gameDiv").append(genDivs);
-		correctP = '<p id="answer" class="text-center">YES! ' + "<strong>" + correctLyric[questionCounter] + "</strong> is correct</p>";
-			$("#gameDiv").html(correctP);
-		setInterval(this.inBetweenScreen(), 1000 *10);
+		// // function win (){
+		// genDivs = $("<div>");
+		// 		  genDivs.attr("id", "quizWin");
+		// 		  genDivs.addClass("panel-body");
+		// 		  $("#gameDivWin").append(genDivs);
+		// correctP = '<p class="text-center">YES! ' + correctLyric[		questionCounter] + "is correct</p>";
+		// 	$("#quizWin").html(correctP);
+		// }
 		
 	},
-
 	loss: function(){
 		lossTally++;
-		console.log(lossTally);
-		genDivs = $("<div>");
-				  genDivs.attr("id", "quizWin");
-				  genDivs.addClass("panel-body");
-				  genDivs.text("test")
-				  $("#gameDiv").append(genDivs);
-		correctP = '<p id="answer" class="text-center">No! The correct answer was  ' + "<strong>" + correctLyric[questionCounter] + "</strong></p>";
-		$("#gameDiv").html(correctP);
-		setInterval(this.inBetweenScreen(), 1000 *10);
+		console.log(lossTally)
 	},
-	resultScreen: function () {
-			results = "<p class='text-center'>All done, here's how you did!" + "</p>" + "<p class='summary-correct'>Correct Answers: " + winTally + "</p>" + "<p>Wrong Answers: " + lossTally + "</p>" + "<p class='text-center reset-button-container'><a class='btn btn-primary btn-lg btn-block reset-button' href='#' role='button'>Reset The Quiz!</a></p>";
-			$("#gameDiv").html(results);
-	},
-	reset: function () {
-		
-		questionCounter = 0;
-		winTally = 0;
-		lossTally = 0;
-		counter = 10;
-		this.landingPage();
-	}
 
 };
+
 //Event listeners
 //==========================================================================================
 
@@ -105,30 +86,20 @@ $("#gameDiv").on("click", "#startBtn", function(){
 
 	game.timeCountDown();
 });
-$("body").on("click", ".reset-button", function(){
-	$("#")
-	game.reset();
-});
+
 $("body").on("click", ".answer", function(){
 	clickedAnswer = $(this).text();
 	console.log(clickedAnswer);
 	if(clickedAnswer === correctLyric[questionCounter]){
-		clearInterval(clockCount);
 		game.win();
-		$("gameDiv").hide();
 		$("#quiz").hide();
 		console.log("correct");
-		// game.timeCountDown();
 	} else {
-		clearInterval(clockCount);
 		game.loss();
-		$("gameDiv").hide();
 		$("#quiz").hide();
 		console.log("incorrect");	
-		// game.timeCountDown();
 	}
 });
-
 
 //Globals
 //==========================================================================================
@@ -139,7 +110,7 @@ function gMarkUp (){
 				  gameDiv.addClass("panel-body");
 				  $("#gameDiv").append(gameDiv);
 		//create el p for timer
-		timerP = '<p class="text-center timer-p">Time Remaining: <span id="timer">10</span></p>';
+		timerP = '<p class="text-center timer-p">Time Remaining: <span id="timer">30</span></p>';
 				$("#quiz").html(timerP);
 	
 		//generated song onclick
@@ -172,18 +143,21 @@ function gMarkUp (){
 //==========================================================================================
 
 var genDivs;
+var input;
+var item;
 var startScreen;
 var results;
 var timerP;
 var songP;
 var answerP;
 var gMarkUp; //variable to create markup during event listener click
-var counter = 10;
+var counter = 30;
 var questionCounter = 0;
 var clickedAnswer;
 var clockCount;
 var winTally = 0;
 var lossTally = 0;
+var unansweredTally = 0;
 // var clickSound = () //add a user click sound
 
 //Global quiz arrays....

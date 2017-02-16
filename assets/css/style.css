@@ -1,0 +1,14 @@
+body {
+	background: url(../images/cds.jpg);
+}
+.jumbotron {	
+	margin-top: 180px;
+}
+#gameDiv {
+	background-color: #eee;
+	border: none; 
+}
+.answer{
+	background-color: #fff;
+	padding: 5px;
+}
