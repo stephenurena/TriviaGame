@@ -84,7 +84,7 @@ var game = {
 		setInterval(this.inBetweenScreen(), 1000 *10);
 	},
 	resultScreen: function () {
-			results = "<div id='results' <p class='text-center'>All done, here's how you did!" + "</p>" + "<p class='summary-correct'>Correct Answers: " + winTally + "</p>" + "<p>Wrong Answers: " + lossTally + "</p>" + "<p class='text-center reset-button-container'><a class='btn btn-primary btn-lg btn-block reset-button' href='#' role='button'>Reset The Quiz!</a></p></div>";
+			results = "<div id='results' <p class='text-center'>All done, here's how you did!" + "</p>" + "<p class='summary-correct'>Correct Answers: " + winTally + "</p>" + "<p>Wrong Answers: " + lossTally + "</p>" + "<p class='text-center reset-button-container'><a class='btn btn-primary btn-lg btn-block reset-button' href='#' role='button'>Let's try this again!</a></p></div>";
 			$("#gameDiv").html(results);
 	},
 	reset: function () {
@@ -97,9 +97,9 @@ var game = {
 	}
 
 };
+
 //Event listeners
 //==========================================================================================
-
 $(document).ready(function(){
 	game.landingPage();
 });
@@ -107,35 +107,34 @@ $(document).ready(function(){
 $("#gameDiv").on("click", "#startBtn", function(){
 	$("#startBtn").hide();
 	game.gMarkUp();
+	sound.play();
 
 	game.timeCountDown();
 });
 $("body").on("click", ".reset-button", function(){
+	sound.play();
 	game.reset();
 });
 $("body").on("click", ".answer", function(){
+	sound.play();
 	clickedAnswer = $(this).text();
 	console.log(clickedAnswer);
 	if(clickedAnswer === correctLyric[questionCounter]){
 		clearInterval(clockCount);
 		game.win();
-		// $("gameDiv").hide();
 		$("#quiz").hide();
 		console.log("correct");
-		// game.timeCountDown();
 	} else {
 		clearInterval(clockCount);
 		game.loss();
-		// $("gameDiv").hide();
 		$("#quiz").hide();
 		console.log("incorrect");	
-		// game.timeCountDown();
+
 	}
 });
 
 //Global variables
 //==========================================================================================
-
 var genDivs;
 var startScreen;
 var results;
@@ -149,11 +148,10 @@ var clickedAnswer;
 var clockCount;
 var winTally = 0;
 var lossTally = 0;
-// var clickSound = () //add a user click sound
+var sound = new Audio("assets/sounds/sound.wav") //add a user click sound
 
 //Global quiz arrays....
 //==========================================================================================
-
 var songArr = ['"Feel Me Flow"-Naughty By Nature', '"Can I Kick It?" — A Tribe Called Quest', 'Passing Me By" — The Pharcyde', '"Electric Relaxation"— A Tribe Called Quest', '"A Children\'s Story" — Slick Rick', '"It Takes Two"— Rob Base and DJ EZ Rock', '"This Is How We Do It"- Montell Jordan' ];
 var lyricArr = ["So here we go now, Holla if ya hear me though, come ____________", "Can I kick it? (____________)", "My ____, my ____, my ____, you do not know me but I know you very well", "Relax yourself girl, ______ _____ _____", "___ ___ ___, Once upon a time not long ago, When people wore _____ and lived life ____, When laws were stern and justice stood, And people were behavin' like they ____ __ good", "I wanna ____ right now, I'm ____ ____ and I came to get down, I'm not internationally known, But I'm known to ____ the microphone", "This is ___ we do it, It's _____ _______, and I feel alright, The party is here on the ______ _______" ];
 var answerArr = [["and feel me flow","and hear me grow, ", "and see me tho, ", "and be me yo, "], ["yes, you can", "no, we ain't ready", "yes, we will!"], ["love, love, love", "babe, babe, babe", "dear, dear, dear"], ["peace and calm", "please settle down", "please can you"], ["Maybe so yo, somethin, hoodies, are too","How bout no, nothin, fast, sort ta", "Here we go, pajamas, slow; stern, ought ta"], ["rock, Rob Base, rock", "sleep, on fire, drop", "eat, so hype, hold"], ["where, Tuesday night, school site", "when, Saturday night, East side", "how, Friday night, West side"]];
